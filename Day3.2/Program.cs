@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Day3._1
+namespace Day3._2
 {
     class Program
     {
         public struct position
         {
             public bool wire1;
+            //public int stepsW1;
             public bool wire2;
+            //public int stepsW2;
+
         }
 
         public struct Coord
@@ -48,7 +51,7 @@ namespace Day3._1
             coord.x = gridSize / 2;
             coord.y = gridSize / 2;
 
-
+            var prevStep = 0;
             for (var i = 0; i < inputWire1.Length; i++)
             {
                 var direction = inputWire1[i].Substring(0, 1);
@@ -73,13 +76,15 @@ namespace Day3._1
                             break;
                     }
                     grid[coord.x, coord.y].wire1 = true;
-
+                    //grid[coord.x, coord.y].stepsW1 = prevStep + 1;
+                    //prevStep = grid[coord.x, coord.y].stepsW1;
+                    // Console.WriteLine(prevStep);
                 }
             }
 
             coord.x = gridSize / 2;
             coord.y = gridSize / 2;
-
+            prevStep = 0;
             for (var i = 0; i < inputWire2.Length; i++)
             {
                 var direction = inputWire2[i].Substring(0, 1);
@@ -105,7 +110,9 @@ namespace Day3._1
                             break;
                     }
                     grid[coord.x, coord.y].wire2 = true;
-
+                    //grid[coord.x, coord.y].stepsW2 = prevStep + 1;
+                    // prevStep = grid[coord.x, coord.y].stepsW2;
+                    Console.WriteLine(prevStep);
                 }
             }
 
@@ -132,7 +139,7 @@ namespace Day3._1
             {
                 manDist.Add(Math.Abs(gridSize / 2 - item.x) + Math.Abs(gridSize / 2 - item.y));
             }
-
+            //var x = manDist.
             return manDist.Min();
         }
 
