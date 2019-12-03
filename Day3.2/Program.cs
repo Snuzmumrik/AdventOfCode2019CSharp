@@ -10,16 +10,17 @@ namespace Day3._2
         public struct position
         {
             public bool wire1;
-            //public int stepsW1;
             public bool wire2;
-            //public int stepsW2;
-
+            public int stepsW1;
+            public int stepsW2;
+            
         }
 
         public struct Coord
         {
             public int x;
             public int y;
+            public int path;
         }
 
 
@@ -58,27 +59,11 @@ namespace Day3._2
                 var distance = Int32.Parse(inputWire1[i].Substring(1));
                 for (var j = 0; j < distance; j++)
                 {
-                    switch (direction)
-                    {
-                        case "R":
-                            coord.x++;
-                            break;
-                        case "L":
-                            coord.x--;
-                            break;
-                        case "U":
-                            coord.y++;
-                            break;
-                        case "D":
-                            coord.y--;
-                            break;
-                        default:
-                            break;
-                    }
+                    
+                    coord = GetMovement(direction, coord);
                     grid[coord.x, coord.y].wire1 = true;
-                    //grid[coord.x, coord.y].stepsW1 = prevStep + 1;
-                    //prevStep = grid[coord.x, coord.y].stepsW1;
-                    // Console.WriteLine(prevStep);
+                    grid[coord.x, coord.y].stepsW1 = prevStep + 1;
+                    prevStep = grid[coord.x, coord.y].stepsW1;
                 }
             }
 
@@ -92,31 +77,37 @@ namespace Day3._2
 
                 for (var j = 0; j < distance; j++)
                 {
-                    switch (direction)
-                    {
-                        case "R":
-                            coord.x++;
-                            break;
-                        case "L":
-                            coord.x--;
-                            break;
-                        case "U":
-                            coord.y++;
-                            break;
-                        case "D":
-                            coord.y--;
-                            break;
-                        default:
-                            break;
-                    }
+                    coord = GetMovement(direction, coord);
                     grid[coord.x, coord.y].wire2 = true;
-                    //grid[coord.x, coord.y].stepsW2 = prevStep + 1;
-                    // prevStep = grid[coord.x, coord.y].stepsW2;
-                    Console.WriteLine(prevStep);
+                    grid[coord.x, coord.y].stepsW2 = prevStep + 1;
+                    prevStep = grid[coord.x, coord.y].stepsW2;
                 }
             }
 
             Console.WriteLine("Answer: " + FindClosestIntersect(grid, gridSize));
+        }
+
+        private static Coord GetMovement(string direction, Coord coord)
+        {
+            switch (direction)
+            {
+                case "R":
+                    coord.x++;
+                    break;
+                case "L":
+                    coord.x--;
+                    break;
+                case "U":
+                    coord.y++;
+                    break;
+                case "D":
+                    coord.y--;
+                    break;
+                default:
+                    break;
+            }
+
+            return coord;
         }
 
         private static int FindClosestIntersect(position[,] grid, int gridSize)
@@ -129,17 +120,21 @@ namespace Day3._2
                 {
                     if (grid[i, j].wire1 == true && grid[i, j].wire2 == true)
                     {
-                        crossings.Add(new Coord() { x = i, y = j });
+                        var paths = grid[i, j].stepsW1 + grid[i, j].stepsW2;
+                        crossings.Add(new Coord() { x = i, y = j, path=paths });
                     }
                 }
             }
 
             List<int> manDist = new List<int>();
+            List<int> pathing = new List<int>();
             foreach (var item in crossings)
             {
                 manDist.Add(Math.Abs(gridSize / 2 - item.x) + Math.Abs(gridSize / 2 - item.y));
+                pathing.Add(item.path);
             }
             //var x = manDist.
+            Console.WriteLine("Shortest path: " + pathing.Min()); 
             return manDist.Min();
         }
 
