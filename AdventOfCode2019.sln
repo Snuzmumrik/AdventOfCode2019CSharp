@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day1", "Day1\Day1.csproj", "{AE81B3A9-1686-4CE2-8D5D-8A6CA409304D}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day2.2", "Day2.2\Day2.2.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day3.1", "Day3.1\Day3.1.csproj", "{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day3.2", "Day3.2\Day3.2.csproj", "{B9E3C98B-1E9A-4748-AED6-788CC93CDD1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day3.2", "Day3.2\Day3.2.csproj", "{B9E3C98B-1E9A-4748-AED6-788CC93CDD1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,12 +47,12 @@ Global
 		{E4536F66-250F-4B42-B009-2107EA8A48DB}.Release|x86.Build.0 = Release|Any CPU
 		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Debug|x86.ActiveCfg = Debug|x86
-		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Debug|x86.Build.0 = Debug|x86
+		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Debug|x86.Build.0 = Debug|Any CPU
 		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Release|x86.ActiveCfg = Release|x86
-		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Release|x86.Build.0 = Release|x86
+		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Release|x86.ActiveCfg = Release|Any CPU
+		{D0A4D185-A59D-4DA2-8D75-BA490767DEB4}.Release|x86.Build.0 = Release|Any CPU
 		{B9E3C98B-1E9A-4748-AED6-788CC93CDD1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B9E3C98B-1E9A-4748-AED6-788CC93CDD1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9E3C98B-1E9A-4748-AED6-788CC93CDD1B}.Debug|x86.ActiveCfg = Debug|Any CPU
