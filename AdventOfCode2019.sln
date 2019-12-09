@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2041
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day1", "Day1\Day1.csproj", "{AE81B3A9-1686-4CE2-8D5D-8A6CA409304D}"
 EndProject
@@ -25,11 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day6.1", "Day6.1\Day6.1.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day6.2", "Day6.2\Day6.2.csproj", "{D098833E-4676-46D5-85C4-98963D676328}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day7.1", "Day7.1\Day7.1.csproj", "{28CF196F-B9AE-4F00-9B8C-6376A302A968}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day7.1", "Day7.1\Day7.1.csproj", "{28CF196F-B9AE-4F00-9B8C-6376A302A968}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day7.2", "Day7.2\Day7.2.csproj", "{351CE50A-267C-4F2A-A6E0-DB0C1A224376}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day7.2", "Day7.2\Day7.2.csproj", "{351CE50A-267C-4F2A-A6E0-DB0C1A224376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day8.1", "Day8.1\Day8.1.csproj", "{EA012202-13D5-4BBC-A1D5-062E43616BA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Day8.1", "Day8.1\Day8.1.csproj", "{EA012202-13D5-4BBC-A1D5-062E43616BA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Day8.02", "Day8.02\Day8.02.csproj", "{D1183793-3F06-4931-87B2-9B3C8274C983}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,6 +153,14 @@ Global
 		{EA012202-13D5-4BBC-A1D5-062E43616BA8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EA012202-13D5-4BBC-A1D5-062E43616BA8}.Release|x86.ActiveCfg = Release|Any CPU
 		{EA012202-13D5-4BBC-A1D5-062E43616BA8}.Release|x86.Build.0 = Release|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Debug|x86.Build.0 = Debug|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1183793-3F06-4931-87B2-9B3C8274C983}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
