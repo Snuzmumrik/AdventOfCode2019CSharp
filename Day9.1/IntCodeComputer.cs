@@ -8,91 +8,92 @@ namespace Day9._1
     {
         public bool Exited { get; private set; }
         public bool WaitingForInput { get; set; }
-        public int InputStartPosition { get; set; }
-        public Queue<int> InputQueue { get; private set; }
-        public Queue<int> OutputQueue { get; set; }
-        public int RelativeBase { get; set; }
+        public long InputStartPosition { get; set; }
+        public Queue<long> InputQueue { get; private set; }
+        public Queue<long> OutputQueue { get; set; }
+        public long RelativeBase { get; set; }
 
         public IntCodeComputer()
         {
-            InputQueue = new Queue<int>();
+            InputQueue = new Queue<long>();
         }
 
-        //public static void IntCodeComputerMain(int[] intCode, Func<int> inputFunc, Action<int> outputAct)
+        //public static void longCodeComputerMain(long[] longCode, Func<long> inputFunc, Action<long> outputAct)
         //{
-        //    intCode = RunProgram(intCode, 0, inputFunc, outputAct);
+        //    longCode = RunProgram(longCode, 0, inputFunc, outputAct);
         //}
 
-        public int[] RunProgram(int[] intCode)
+        public long[] RunProgram(long[] longCode)
         {
-            return RunProgram(intCode, InputQueue.Dequeue());
+            RelativeBase = 0;
+            return RunProgram(longCode, InputQueue.Dequeue());
         }
-        public int[] RunProgram(int[] intCode, int pos)
+        public long[] RunProgram(long[] longCode, long pos)
         {
             WaitingForInput = false;
-            RelativeBase = 0;
-            var startValue = intCode[pos];
-            var nextPos = 0;
-            Parameter p = SetParameters(intCode[pos].ToString());
+            
+            long startValue = longCode[pos];
+            long nextPos = 0;
+            Parameter p = SetParameters(longCode[pos].ToString());
 
             if (p.OpCode == OpCode.Add)
             {
-                intCode[intCode[pos + 3]] = Program1(intCode, pos + 1, pos + 2, p); 
+                longCode[longCode[pos + 3]] = Program1(longCode, pos + 1, pos + 2, p); 
                 nextPos = pos + 4;
             }
             else if (p.OpCode == OpCode.Multiply)
             {
-                intCode[intCode[pos + 3]] = Program2(intCode, pos + 1, pos + 2, p);
+                longCode[longCode[pos + 3]] = Program2(longCode, pos + 1, pos + 2, p);
                 nextPos = pos + 4;
             }
             else if (p.OpCode == OpCode.Input)
             {
                 if (InputQueue.Count > 0)
                 {
-                    intCode = Program3(intCode, pos + 1, p);
+                    longCode = Program3(longCode, pos + 1, p);
                     nextPos = pos + 2;
                 }
                 else
                 {
                     WaitingForInput = true;
                     InputStartPosition = pos;
-                    return intCode;
+                    return longCode;
                 }
 
             }
             else if (p.OpCode == OpCode.Output)
             {
-                Program4(intCode, pos, p);
+                Program4(longCode, pos, p);
                 nextPos = pos + 2;
             }
             else if (p.OpCode == OpCode.JumpToIfTrue)
             {
-                nextPos = Program5(pos + 1, pos + 2, p, intCode, pos);
+                nextPos = Program5(pos + 1, pos + 2, p, longCode, pos);
 
             }
             else if (p.OpCode == OpCode.JumpToIfFalse)
             {
-                nextPos = Program6(pos + 1, pos + 2, p, intCode, pos);
+                nextPos = Program6(pos + 1, pos + 2, p, longCode, pos);
             }
             else if (p.OpCode == OpCode.LessThan)
             {
-                intCode = Program7(pos + 1, pos + 2, intCode[pos + 3], p, intCode);
+                longCode = Program7(pos + 1, pos + 2, longCode[pos + 3], p, longCode);
                 nextPos = pos + 4;
             }
             else if (p.OpCode == OpCode.Equals)
             {
-                intCode = Program8(pos + 1, pos + 2, intCode[pos + 3], p, intCode);
+                longCode = Program8(pos + 1, pos + 2, longCode[pos + 3], p, longCode);
                 nextPos = pos + 4;
             }
             else if(p.OpCode == OpCode.ChangeRelBase)
             {
-                Program9(intCode, intCode[pos + 1], p);
+                Program9(longCode, longCode[pos + 1], p);
                 nextPos = pos + 2;
             }
             else if (p.OpCode == OpCode.Exit)
             {
                 Exited = true;
-                return intCode;
+                return longCode;
             }
             else
             {
@@ -102,29 +103,37 @@ namespace Day9._1
                 throw new Exception();
             }
 
-            if (startValue != intCode[pos])
+            if (startValue != longCode[pos])
             {
                 nextPos = pos;
             }
 
-            RunProgram(intCode, nextPos);
-            return intCode;
+            RunProgram(longCode, nextPos);
+            return longCode;
         }
 
 
-        private int HandleMode(int[] intCode, Mode mode, int param)
+        private long HandleMode(long[] longCode, Mode mode, long param)
         {
-            var returnParam = 0;
+            long returnParam = 0;
             switch (mode)
             {
                 case Mode.Position:
-                    returnParam = intCode[intCode[param]];
+                    long position = longCode[param];
+                    while(position > longCode.Length)
+                    {
+                        position -= longCode.Length -1;
+                    }
+                    returnParam = longCode[position];
                     break;
                 case Mode.Immidiate:
-                    returnParam = intCode[param];
+                    returnParam = longCode[param];
                     break;
                 case Mode.Relative:
-                    returnParam = intCode[intCode[RelativeBase + param]];
+                    param = longCode[param];
+                    param = RelativeBase + param;
+                    returnParam = longCode[param];
+                    
                     break;
                 default:
                     Console.WriteLine("Something wrong in modehandeling");
@@ -155,79 +164,79 @@ namespace Day9._1
                 }
                 opCode = opCode.Substring(opCode.Length - 2);
             }
-            p.OpCode = (OpCode)int.Parse(opCode);
+            p.OpCode = (OpCode)long.Parse(opCode);
 
             return p;
         }
-        private int Program1(int[] intCode, int param1, int param2, Parameter p)
+        private long Program1(long[] longCode, long param1, long param2, Parameter p)
         {
-            param1 = HandleMode(intCode, p.FirstParamMode, param1); 
-            param2 = HandleMode(intCode, p.SecondParamMode, param2);
+            param1 = HandleMode(longCode, p.FirstParamMode, param1); 
+            param2 = HandleMode(longCode, p.SecondParamMode, param2);
             return param1 + param2;
         }
 
-        private int Program2(int[] intCode, int param1, int param2, Parameter p)
+        private long Program2(long[] longCode, long param1, long param2, Parameter p)
         {
-            param1 = HandleMode(intCode, p.FirstParamMode, param1); 
-            param2 = HandleMode(intCode, p.SecondParamMode, param2);
+            param1 = HandleMode(longCode, p.FirstParamMode, param1); 
+            param2 = HandleMode(longCode, p.SecondParamMode, param2);
             return param1 * param2;
         }
-        int[] Program3(int[] intCode, int pos, Parameter p)
+        long[] Program3(long[] longCode, long pos, Parameter p)
         {
             var input = InputQueue.Dequeue();
-            var inputValue = intCode[pos];
-            intCode[inputValue] = input;
-            return intCode;
+            var inputValue = longCode[pos];
+            longCode[inputValue] = input;
+            //InputQueue.Enqueue(1);
+            return longCode;
         }
 
-        void Program4(int[] intCode, int pos, Parameter p)
+        void Program4(long[] longCode, long pos, Parameter p)
         {
-            var outputValue = HandleMode(intCode, p.FirstParamMode, pos + 1);
+            var outputValue = HandleMode(longCode, p.FirstParamMode, pos + 1);
             OutputQueue.Enqueue(outputValue);
         }
 
-        int Program5(int param1, int param2, Parameter p, int[] intCode, int currentPos)
+        long Program5(long param1, long param2, Parameter p, long[] longCode, long currentPos)
         {
-            param1 = HandleMode(intCode, p.FirstParamMode, param1);
-            param2 = HandleMode(intCode, p.SecondParamMode, param2);
+            param1 = HandleMode(longCode, p.FirstParamMode, param1);
+            param2 = HandleMode(longCode, p.SecondParamMode, param2);
             if (param1 != 0) return param2;
 
             return currentPos + 3;
         }
 
-        int Program6(int param1, int param2, Parameter p, int[] intCode, int currentPos)
+        long Program6(long param1, long param2, Parameter p, long[] longCode, long currentPos)
         {
-            param1 = HandleMode(intCode, p.FirstParamMode, param1);
-            param2 = HandleMode(intCode, p.SecondParamMode, param2);
+            param1 = HandleMode(longCode, p.FirstParamMode, param1);
+            param2 = HandleMode(longCode, p.SecondParamMode, param2);
 
             if (param1 == 0) return param2;
             return currentPos + 3;
         }
-        int[] Program7(int param1, int param2, int param3, Parameter p, int[] intCode)
+        long[] Program7(long param1, long param2, long param3, Parameter p, long[] longCode)
         {
-            param1 = HandleMode(intCode, p.FirstParamMode, param1);
-            param2 = HandleMode(intCode, p.SecondParamMode, param2);
+            param1 = HandleMode(longCode, p.FirstParamMode, param1);
+            param2 = HandleMode(longCode, p.SecondParamMode, param2);
 
-            if (param1 < param2) intCode[param3] = 1;
-            else intCode[param3] = 0;
+            if (param1 < param2) longCode[param3] = 1;
+            else longCode[param3] = 0;
 
-            return intCode;
+            return longCode;
         }
-        int[] Program8(int param1, int param2, int param3, Parameter p, int[] intCode)
+        long[] Program8(long param1, long param2, long param3, Parameter p, long[] longCode)
         {
-            param1 = HandleMode(intCode, p.FirstParamMode, param1);
-            param2 = HandleMode(intCode, p.SecondParamMode, param2);
+            param1 = HandleMode(longCode, p.FirstParamMode, param1);
+            param2 = HandleMode(longCode, p.SecondParamMode, param2);
 
-            if (param1 == param2) intCode[param3] = 1;
-            else intCode[param3] = 0;
+            if (param1 == param2) longCode[param3] = 1;
+            else longCode[param3] = 0;
 
-            return intCode;
+            return longCode;
         }
 
-        private void Program9(int[] intCode, int param, Parameter p)
+        private void Program9(long[] longCode, long param, Parameter p)
         {
-            if (p.FirstParamMode == Mode.Position) param = intCode[param];
-            if (p.FirstParamMode == Mode.Relative) param = intCode[RelativeBase + param];
+            param = HandleMode(longCode, p.FirstParamMode, param);
             RelativeBase += param;
         }
         

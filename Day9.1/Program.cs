@@ -7,13 +7,13 @@ namespace Day9._1
     {
         static void Main(string[] args)
         {
-            var inputFile = "./input.txt"; //Input test could be used to test, should return 584126
+            var inputFile = "./inputTest.txt"; //Input test could be used to test, should return 584126
 
             if (File.Exists(inputFile))
             {
-                int[] program = Array.ConvertAll(File.ReadAllText(inputFile).Split(","), s => int.Parse(s));
+                long[] program = Array.ConvertAll(File.ReadAllText(inputFile).Split(","), s => long.Parse(s));
                 var intCodeComputer = new IntCodeComputer();
-                intCodeComputer.InputQueue.Enqueue(5);//Teststuff
+                //intCodeComputer.InputQueue.Enqueue(1);//Teststuff
                 intCodeComputer.OutputQueue = intCodeComputer.InputQueue;
                 intCodeComputer.RunProgram(program, 0);
                 
