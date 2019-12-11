@@ -11,7 +11,7 @@ namespace Day9._1
 
             if (File.Exists(inputFile))
             {
-                long[] program = new long[500000000];
+                long[] program = new long[100000];
 
                 long[] programInput = Array.ConvertAll(File.ReadAllText(inputFile).Split(","), s => long.Parse(s));
 
@@ -20,7 +20,7 @@ namespace Day9._1
                     program[i] = programInput[i];
                 }
                 var intCodeComputer = new IntCodeComputer();
-                intCodeComputer.InputQueue.Enqueue(1);
+                intCodeComputer.InputQueue.Enqueue(2);
 
                 intCodeComputer.RunProgram(program, 0);
                 
