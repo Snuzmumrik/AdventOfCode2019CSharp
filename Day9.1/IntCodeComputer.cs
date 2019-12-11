@@ -7,6 +7,9 @@ namespace Day9._1
 {
     public class IntCodeComputer
     {
+        public bool Exited { get; set; }
+        public bool WaitingForInput { get; set; }
+        private int CurrentPosition { get; set; }
         public Queue<long> InputQueue { get; private set; }
         public Queue<long> OutputQueue { get; set; }
         public long RelativeBase { get; set; }
@@ -24,19 +27,20 @@ namespace Day9._1
         }
         public long[] RunProgram(long[] intCode, long pos)
         {
+
             long startValue = intCode[pos];
-            long nextPos = 0;
+            long nextPos;
             Parameter p = SetParameters(intCode[pos].ToString());
 
-            long param1 = 0;
-            long param2 = 0;
-            long param3 = 0;
+            long param1;
+            long param2;
+            long param3;
 
             param1 = HandleMode(intCode, p.FirstParamMode, pos + 1, p.OpCode == OpCode.Input);
             param2 = HandleMode(intCode, p.SecondParamMode, pos + 2, false);
             param3 = HandleMode(intCode, p.ThirdParamMode, pos + 3, true);
 
-            
+
 
             switch (p.OpCode)
             {
@@ -49,8 +53,8 @@ namespace Day9._1
                     nextPos = pos + 4;
                     break;
                 case OpCode.Input:
-                        intCode = Program3(intCode, param1);
-                        nextPos = pos + 2;
+                    intCode = Program3(intCode, param1);
+                    nextPos = pos + 2;
                     break;
                 case OpCode.Output:
                     Program4(intCode, param1);
@@ -115,7 +119,7 @@ namespace Day9._1
 
         private static Parameter SetParameters(string opCode)
         {
-            
+
             Parameter p = new Parameter();
             p.FirstParamMode = Mode.Position;
             p.SecondParamMode = Mode.Position;
@@ -159,8 +163,8 @@ namespace Day9._1
 
         long Program5(bool ifTrue, long param1, long param2, long[] intCode, long currentPos)
         {
-                if (param1 != 0 && ifTrue) return param2;
-                if (param1 == 0 && !ifTrue) return param2;
+            if (param1 != 0 && ifTrue) return param2;
+            if (param1 == 0 && !ifTrue) return param2;
 
             return currentPos + 3;
         }
@@ -168,10 +172,10 @@ namespace Day9._1
         long[] Program7(bool lessThan, long param1, long param2, long param3, long[] intCode)
         {
             intCode[param3] = 0;
-            
-                if (param1 < param2 && lessThan) intCode[param3] = 1;
-                if (param1 == param2 && !lessThan) intCode[param3] = 1;
-            
+
+            if (param1 < param2 && lessThan) intCode[param3] = 1;
+            if (param1 == param2 && !lessThan) intCode[param3] = 1;
+
 
             return intCode;
         }
