@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Day9._1
 {
@@ -30,78 +31,59 @@ namespace Day9._1
             long param1 = 0;
             long param2 = 0;
             long param3 = 0;
-            if (p.OpCode == OpCode.Input)
-            {
-                param1 = HandleMode(intCode, p.FirstParamMode, pos + 1, true);
-            }
-            else
-            {
-                param1 = HandleMode(intCode, p.FirstParamMode, pos + 1, false);
-                param2 = HandleMode(intCode, p.SecondParamMode, pos + 2, false);
-                param3 = HandleMode(intCode, p.ThirdParamMode, pos + 3, true);
-            }
+
+            param1 = HandleMode(intCode, p.FirstParamMode, pos + 1, p.OpCode == OpCode.Input);
+            param2 = HandleMode(intCode, p.SecondParamMode, pos + 2, false);
+            param3 = HandleMode(intCode, p.ThirdParamMode, pos + 3, true);
+
             
-            if (p.OpCode == OpCode.Add)
+
+            switch (p.OpCode)
             {
-                intCode = Program1(intCode, param1, param2, param3, p);
-                nextPos = pos + 4;
-            }
-            else if (p.OpCode == OpCode.Multiply)
-            {
-                intCode = Program1(intCode, param1, param2, param3, p);
-                nextPos = pos + 4;
-            }
-            else if (p.OpCode == OpCode.Input)
-            {
-                if (InputQueue.Count > 0)
-                {
-                    intCode = Program3(intCode, param1);
+                case OpCode.Add:
+                    intCode = Program1(intCode, param1, param2, param3, p);
+                    nextPos = pos + 4;
+                    break;
+                case OpCode.Multiply:
+                    intCode = Program1(intCode, param1, param2, param3, p);
+                    nextPos = pos + 4;
+                    break;
+                case OpCode.Input:
+                        intCode = Program3(intCode, param1);
+                        nextPos = pos + 2;
+                    break;
+                case OpCode.Output:
+                    Program4(intCode, param1);
                     nextPos = pos + 2;
-                }
-
-            }
-            else if (p.OpCode == OpCode.Output)
-            {
-                Program4(intCode, param1);
-                nextPos = pos + 2;
-            }
-            else if (p.OpCode == OpCode.JumpToIfTrue)
-            {
-                nextPos = Program5(true, param1, param2, intCode, pos);
-            }
-            else if (p.OpCode == OpCode.JumpToIfFalse)
-            {
-                nextPos = Program5(false, param1, param2, intCode, pos);
-            }
-            else if (p.OpCode == OpCode.LessThan)
-            {
-                intCode = Program7(true, param1, param2, param3, intCode);
-                nextPos = pos + 4;
-            }
-            else if (p.OpCode == OpCode.Equals)
-            {
-                intCode = Program7(false, param1, param2, param3, intCode);
-                nextPos = pos + 4;
-            }
-            else if (p.OpCode == OpCode.ChangeRelBase)
-            {
-                Program9(intCode, param1);
-                nextPos = pos + 2;
-            }
-            else if (p.OpCode == OpCode.Exit)
-            {
-                return intCode;
-            }
-            else
-            {
-                throw new Exception();
+                    break;
+                case OpCode.JumpToIfTrue:
+                    nextPos = Program5(true, param1, param2, intCode, pos);
+                    break;
+                case OpCode.JumpToIfFalse:
+                    nextPos = Program5(false, param1, param2, intCode, pos);
+                    break;
+                case OpCode.LessThan:
+                    intCode = Program7(true, param1, param2, param3, intCode);
+                    nextPos = pos + 4;
+                    break;
+                case OpCode.Equals:
+                    intCode = Program7(false, param1, param2, param3, intCode);
+                    nextPos = pos + 4;
+                    break;
+                case OpCode.ChangeRelBase:
+                    Program9(intCode, param1);
+                    nextPos = pos + 2;
+                    break;
+                case OpCode.Exit:
+                    return intCode;
+                default:
+                    throw new Exception();
             }
 
-            if (startValue != intCode[pos])
-            {
-                nextPos = pos;
-            }
-
+            //if (startValue != intCode[pos])
+            //{
+            //    nextPos = pos;
+            //}
             RunProgram(intCode, nextPos);
             return intCode;
         }
@@ -119,7 +101,7 @@ namespace Day9._1
                     returnParam = posMode ? 0 : intCode[param];
                     break;
                 case Mode.Relative:
-                    param =  RelativeBase + intCode[param];
+                    param = RelativeBase + intCode[param];
                     returnParam = posMode ? param : intCode[param];
                     break;
                 default:
@@ -133,11 +115,12 @@ namespace Day9._1
 
         private static Parameter SetParameters(string opCode)
         {
+            
             Parameter p = new Parameter();
             p.FirstParamMode = Mode.Position;
             p.SecondParamMode = Mode.Position;
             p.ThirdParamMode = Mode.Position;
-            //Console.WriteLine("OPCODES: " + opCode);
+            Console.WriteLine("OPCODES: " + opCode);
             opCode = opCode.PadLeft(5, '0');
 
             if (opCode[2] == '1') p.FirstParamMode = Mode.Immidiate;
@@ -146,7 +129,6 @@ namespace Day9._1
             if (opCode[1] == '1') p.SecondParamMode = Mode.Immidiate;
             if (opCode[1] == '2') p.SecondParamMode = Mode.Relative;
 
-            // if (opCode[0] == '1') p.ThirdParamMode = Mode.Immidiate;
             if (opCode[0] == '2') p.ThirdParamMode = Mode.Relative;
 
             opCode = opCode.Substring(3);
@@ -177,14 +159,8 @@ namespace Day9._1
 
         long Program5(bool ifTrue, long param1, long param2, long[] intCode, long currentPos)
         {
-            if (ifTrue)
-            {
-                if (param1 != 0) return param2;
-            }
-            else
-            {
-                if (param1 == 0) return param2;
-            }
+                if (param1 != 0 && ifTrue) return param2;
+                if (param1 == 0 && !ifTrue) return param2;
 
             return currentPos + 3;
         }
@@ -192,14 +168,10 @@ namespace Day9._1
         long[] Program7(bool lessThan, long param1, long param2, long param3, long[] intCode)
         {
             intCode[param3] = 0;
-            if (lessThan)
-            {
-                if (param1 < param2) intCode[param3] = 1;
-            }
-            else if (!lessThan)
-            {
-                if (param1 == param2) intCode[param3] = 1;
-            }
+            
+                if (param1 < param2 && lessThan) intCode[param3] = 1;
+                if (param1 == param2 && !lessThan) intCode[param3] = 1;
+            
 
             return intCode;
         }
